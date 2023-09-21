@@ -29,6 +29,10 @@ dependencies {
 	runtimeOnly("com.h2database:h2")
 	runtimeOnly("org.mariadb.jdbc:mariadb-java-client")
 	testImplementation("org.springframework.boot:spring-boot-starter-test")
+	// jgraph
+	testImplementation("org.jgrapht:jgrapht-core:1.0.1")
+	testImplementation("org.springframework.boot:spring-boot-starter-test")
+	testImplementation("io.rest-assured:rest-assured:5.3.2")
 }
 
 tasks.withType<KotlinCompile> {
