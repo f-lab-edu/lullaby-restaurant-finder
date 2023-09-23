@@ -28,11 +28,13 @@ class JwtFilter(
 
     private fun resolveToken(request: HttpServletRequest): String? {
         val bearerToken = request.getHeader(AUTHORIZATION_HEADER) ?: return null
-        return if (bearerToken.startsWith("Bearer ")) bearerToken.substring(7) else null
+        return if (bearerToken.startsWith(BEARER_TOKEN_PREFIX)) bearerToken.substring(BEARER_TOKEN_LENGTH) else null
     }
 
     companion object {
         const val AUTHORIZATION_HEADER = "Authorization"
+        const val BEARER_TOKEN_PREFIX = "Bearer "
+        const val BEARER_TOKEN_LENGTH = BEARER_TOKEN_PREFIX.length
     }
 
 }
