@@ -1,6 +1,6 @@
 package com.lullaby.flab.restrauntfinderapi.security
 
-import com.lullaby.flab.restrauntfinderapi.application.AuthService
+import com.lullaby.flab.restrauntfinderapi.application.auth.AuthService
 import jakarta.servlet.FilterChain
 import jakarta.servlet.http.HttpServletRequest
 import jakarta.servlet.http.HttpServletResponse
