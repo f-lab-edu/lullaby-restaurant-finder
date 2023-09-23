@@ -6,6 +6,7 @@ plugins {
 	kotlin("jvm") version "1.9.10"
 	kotlin("plugin.spring") version "1.9.10"
 	kotlin("plugin.jpa") version "1.9.10"
+	kotlin("kapt") version "1.6.0"
 }
 
 group = "com.lullaby.flab"
@@ -21,9 +22,11 @@ repositories {
 	maven { url = uri("https://repo.spring.io/snapshot") }
 }
 
+
 dependencies {
 	implementation("org.springframework.boot:spring-boot-starter-data-jpa")
 	implementation("org.springframework.boot:spring-boot-starter-web")
+	annotationProcessor("org.springframework.boot:spring-boot-configuration-processor")
 	implementation("org.springframework.boot:spring-boot-starter-security")
 	implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
 	implementation("org.jetbrains.kotlin:kotlin-reflect")
@@ -33,7 +36,6 @@ dependencies {
 	testImplementation("org.jgrapht:jgrapht-core:1.0.1")
 	testImplementation("org.springframework.boot:spring-boot-starter-test")
 	testImplementation("io.rest-assured:rest-assured:5.3.2")
-
 	implementation("io.jsonwebtoken:jjwt-api:0.11.5")
 	runtimeOnly("io.jsonwebtoken:jjwt-impl:0.11.5")
 	runtimeOnly("io.jsonwebtoken:jjwt-jackson:0.11.5")
