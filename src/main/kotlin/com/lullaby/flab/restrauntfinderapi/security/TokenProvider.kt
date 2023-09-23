@@ -58,16 +58,16 @@ class TokenProvider {
         try {
             Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(token)
             return true
-        } catch (e: io.jsonwebtoken.security.SecurityException) {
-            logger.info("잘못된 JWT 서명입니다.")
+        } catch (e: SecurityException) {
+            logger.error("토큰 서명이 올바르지 않습니다.", e)
         } catch (e: MalformedJwtException) {
-            logger.info("잘못된 JWT 서명입니다.")
+            logger.error("토큰 서명이 올바르지 않습니다.", e)
         } catch (e: ExpiredJwtException) {
-            logger.info("만료된 JWT 토큰입니다.")
+            logger.error("만료된 토큰 입니다.", e)
         } catch (e: UnsupportedJwtException) {
-            logger.info("지원되지 않는 JWT 토큰입니다.")
+            logger.error("지원 하지 않는 형식의 토큰 입니다..", e)
         } catch (e: IllegalArgumentException) {
-            logger.info("JWT 토큰이 잘못되었습니다.")
+            logger.error("올바르지 않은 토큰 입니다.", e)
         }
         return false
     }
