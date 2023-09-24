@@ -1,4 +1,4 @@
-package com.lullaby.flab.restrauntfinderapi.application.response
+package com.lullaby.flab.restrauntfinderapi.application.auth.response
 
 import com.lullaby.flab.restrauntfinderapi.domain.Member
 

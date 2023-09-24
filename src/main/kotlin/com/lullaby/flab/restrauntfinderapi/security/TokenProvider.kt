@@ -15,17 +15,19 @@ import java.security.Key
 import java.util.Date
 
 @Component
-class TokenProvider {
+class TokenProvider(
+    val jwtProperties: JwtProperties
+) {
     private val logger: Logger = LoggerFactory.getLogger(TokenProvider::class.java)
-    private val secret: String = "Y2hvcHBhLWRvbnQtYml0ZS1tZS1zcHJpbmctYm9vdC1qd3QtdGVzdC1zZWNyZXQta2V5LWNob3BwYS1kb250LWJpdGUtbWUtc3ByaW5nLWJvb3Qtand0LXRlc3Qtc2VjcmV0LWtleQo="
-    private val accessTokenExpireInMillis: Long = 1000 * 60 * 60L // 1시간
-    private val refreshTokenExpireInMillis: Long = 1000 * 60 * 60 * 24 * 7L // 1주일
-    private var key: Key = Keys.hmacShaKeyFor(Decoders.BASE64.decode(secret))
+    private var key: Key? = null
+    init {
+        key = Keys.hmacShaKeyFor(Decoders.BASE64.decode(jwtProperties.secret))
+    }
 
     fun accessToken(userId: Long): String {
         // 토큰의 expire 시간을 설정
         val now: Long = Date().time
-        val validity = Date(now + accessTokenExpireInMillis)
+        val validity = Date(now + jwtProperties.expires.accessToken)
 
         return Jwts.builder()
             .setSubject(userId.toString())
@@ -37,7 +39,7 @@ class TokenProvider {
     fun refreshToken(userId: Long): String {
         // 토큰의 expire 시간을 설정
         val now: Long = Date().time
-        val validity = Date(now + refreshTokenExpireInMillis)
+        val validity = Date(now + jwtProperties.expires.refreshToken)
 
         return Jwts.builder()
             .setSubject(userId.toString())
@@ -58,16 +60,16 @@ class TokenProvider {
         try {
             Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(token)
             return true
-        } catch (e: io.jsonwebtoken.security.SecurityException) {
-            logger.info("잘못된 JWT 서명입니다.")
+        } catch (e: SecurityException) {
+            logger.error("토큰 서명이 올바르지 않습니다.", e)
         } catch (e: MalformedJwtException) {
-            logger.info("잘못된 JWT 서명입니다.")
+            logger.error("토큰 서명이 올바르지 않습니다.", e)
         } catch (e: ExpiredJwtException) {
-            logger.info("만료된 JWT 토큰입니다.")
+            logger.error("만료된 토큰 입니다.", e)
         } catch (e: UnsupportedJwtException) {
-            logger.info("지원되지 않는 JWT 토큰입니다.")
+            logger.error("지원 하지 않는 형식의 토큰 입니다..", e)
         } catch (e: IllegalArgumentException) {
-            logger.info("JWT 토큰이 잘못되었습니다.")
+            logger.error("올바르지 않은 토큰 입니다.", e)
         }
         return false
     }

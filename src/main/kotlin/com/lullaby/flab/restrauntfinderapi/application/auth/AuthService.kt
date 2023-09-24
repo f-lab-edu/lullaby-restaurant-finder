@@ -1,9 +1,9 @@
-package com.lullaby.flab.restrauntfinderapi.application
+package com.lullaby.flab.restrauntfinderapi.application.auth
 
-import com.lullaby.flab.restrauntfinderapi.application.request.SignInRequest
-import com.lullaby.flab.restrauntfinderapi.application.request.SignUpRequest
-import com.lullaby.flab.restrauntfinderapi.application.response.SignInResponse
-import com.lullaby.flab.restrauntfinderapi.application.response.SignUpResponse
+import com.lullaby.flab.restrauntfinderapi.application.auth.request.SignInRequest
+import com.lullaby.flab.restrauntfinderapi.application.auth.request.SignUpRequest
+import com.lullaby.flab.restrauntfinderapi.application.auth.response.SignInResponse
+import com.lullaby.flab.restrauntfinderapi.application.auth.response.SignUpResponse
 import com.lullaby.flab.restrauntfinderapi.domain.Member
 import com.lullaby.flab.restrauntfinderapi.domain.MemberRepository
 import com.lullaby.flab.restrauntfinderapi.security.TokenProvider
@@ -20,15 +20,18 @@ class AuthService(
 ) {
 
     fun signUp(request: SignUpRequest): SignUpResponse {
-        check(!memberRepository.existsByAccount(request.account)) { "이미 존재 하는 계정명 입니다." }
+        if (memberRepository.existsByAccount(request.account)) {
+            throw AlreadyExistMemberException()
+        }
         val encodedPassword = passwordEncryptService.encrypt(request.password)
         val user = Member(request.account, encodedPassword)
         return memberRepository.save(user).let(::SignUpResponse)
     }
+
     fun signIn(request: SignInRequest): SignInResponse {
-        val user = memberRepository.findByAccount(request.account) ?: throw RuntimeException()
+        val user = memberRepository.findByAccount(request.account) ?: throw MemberNotFoundException()
         if (!passwordEncryptService.match(request.password, user.encryptedPassword)) {
-            throw RuntimeException()
+            throw IncorrectPasswordException()
         }
 
         return SignInResponse(
@@ -39,11 +42,10 @@ class AuthService(
 
     fun authenticate(accessToken: String): Authentication {
         if (!tokenProvider.validateToken(accessToken)) {
-            throw RuntimeException()
+            throw InvalidTokenException()
         }
-
         val claims = tokenProvider.parseToken(accessToken)
-        val user = memberRepository.findByIdOrNull(claims.subject.toLong()) ?: throw RuntimeException()
+        val user = memberRepository.findByIdOrNull(claims.subject.toLong()) ?: throw MemberNotFoundException()
         return UsernamePasswordAuthenticationToken(user, null, listOf())
     }
 

@@ -1,4 +1,4 @@
-package com.lullaby.flab.restrauntfinderapi.application
+package com.lullaby.flab.restrauntfinderapi.application.auth
 
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
 import org.springframework.security.crypto.password.PasswordEncoder

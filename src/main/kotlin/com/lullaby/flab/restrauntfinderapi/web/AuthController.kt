@@ -1,8 +1,8 @@
 package com.lullaby.flab.restrauntfinderapi.web
 
-import com.lullaby.flab.restrauntfinderapi.application.AuthService
-import com.lullaby.flab.restrauntfinderapi.application.request.SignInRequest
-import com.lullaby.flab.restrauntfinderapi.application.request.SignUpRequest
+import com.lullaby.flab.restrauntfinderapi.application.auth.AuthService
+import com.lullaby.flab.restrauntfinderapi.application.auth.request.SignInRequest
+import com.lullaby.flab.restrauntfinderapi.application.auth.request.SignUpRequest
 import org.springframework.http.HttpStatus
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
