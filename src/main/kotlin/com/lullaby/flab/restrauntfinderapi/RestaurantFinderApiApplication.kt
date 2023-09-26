@@ -6,8 +6,8 @@ import org.springframework.boot.runApplication
 
 @ConfigurationPropertiesScan
 @SpringBootApplication
-class RestrauntFinderApiApplication
+class RestaurantFinderApiApplication
 
 fun main(args: Array<String>) {
-	runApplication<RestrauntFinderApiApplication>(*args)
+	runApplication<RestaurantFinderApiApplication>(*args)
 }
