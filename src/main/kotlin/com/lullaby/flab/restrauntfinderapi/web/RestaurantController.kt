@@ -4,6 +4,7 @@ import com.lullaby.flab.restrauntfinderapi.application.restaurant.RestaurantServ
 import com.lullaby.flab.restrauntfinderapi.application.restaurant.command.CreateRestaurantCommand
 import com.lullaby.flab.restrauntfinderapi.application.restaurant.response.RestaurantResponse
 import org.springframework.http.HttpStatus
+import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.ResponseStatus
@@ -18,5 +19,8 @@ class RestaurantController(
     @PostMapping("/restaurants")
     fun createRestaurant(@RequestBody request: CreateRestaurantCommand): RestaurantResponse
         = restaurantService.create(request)
+
+    @GetMapping("/restaurants")
+    fun listRestaurant(): List<RestaurantResponse> = restaurantService.list()
 
 }

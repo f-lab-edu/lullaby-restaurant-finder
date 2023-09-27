@@ -19,4 +19,6 @@ class RestaurantService(
             .run(::RestaurantResponse)
     }
 
+    fun list(): List<RestaurantResponse> = restaurantRepository.findAll().map(::RestaurantResponse)
+
 }
