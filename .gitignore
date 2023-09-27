@@ -4,6 +4,7 @@
 /bin
 /build
 /.gradle
+/out
 
 # Logs
 logs
