@@ -22,3 +22,16 @@ fun 식당_생성(accessToken: String, name: String, address: String, tables: In
 
     return response.`as`(RestaurantResponse::class.java)
 }
+
+fun 식당_조회(accessToken: String): List<RestaurantResponse> {
+    val response = RestAssured
+        .given().log().all()
+        .header("Authorization", "Bearer $accessToken")
+        .contentType(MediaType.APPLICATION_JSON_VALUE)
+        .`when`().get("/restaurants")
+        .then().log().all().extract()
+
+    Assertions.assertThat(response.statusCode()).isEqualTo(HttpStatus.OK.value())
+
+    return response.jsonPath().getList("", RestaurantResponse::class.java)
+}
