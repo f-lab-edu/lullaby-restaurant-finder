@@ -5,4 +5,4 @@ pluginManagement {
 		gradlePluginPortal()
 	}
 }
-rootProject.name = "restraunt-finder-api"
+rootProject.name = "restaurant-finder-api"
