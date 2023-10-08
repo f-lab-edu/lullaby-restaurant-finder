@@ -13,7 +13,7 @@ class SecurityConfig(
     val authService: AuthService,
 ) {
 
-    private val allowedUrls = arrayOf("/sign-up", "/sign-in", "/error")
+    private val allowedUrls = arrayOf("/health-check", "/sign-up", "/sign-in", "/error")
 
     @Bean
     fun filterChain(httpSecurity: HttpSecurity): SecurityFilterChain {
