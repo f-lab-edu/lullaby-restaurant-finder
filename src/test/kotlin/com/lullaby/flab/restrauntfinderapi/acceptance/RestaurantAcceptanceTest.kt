@@ -1,6 +1,7 @@
 package com.lullaby.flab.restrauntfinderapi.acceptance
 
 import com.lullaby.flab.restrauntfinderapi.acceptance.fixture.로그인
+import com.lullaby.flab.restrauntfinderapi.acceptance.fixture.식당_메뉴_추가
 import com.lullaby.flab.restrauntfinderapi.acceptance.fixture.식당_생성
 import com.lullaby.flab.restrauntfinderapi.acceptance.fixture.식당_조회
 import com.lullaby.flab.restrauntfinderapi.acceptance.fixture.회원_가입
@@ -54,21 +55,7 @@ class RestaurantAcceptanceTest : AcceptanceTest() {
             FoodType.KOREAN
         )
 
-        val command = mapOf(
-            "name" to "교자 칼국수",
-            "price" to "11000",
-            "type" to "MAIN"
-        )
-
-        val response = RestAssured
-            .given().log().all()
-            .header("Authorization", "Bearer $accessToken")
-            .body(command)
-            .contentType(MediaType.APPLICATION_JSON_VALUE)
-            .`when`().post("/restaurants/${restaurantResponse.id}/menus")
-            .then().log().all().extract()
-
-        assertThat(response.statusCode()).isEqualTo(HttpStatus.CREATED.value())
+        식당_메뉴_추가(accessToken!!, restaurantResponse.id, "칼국수", 11000, "MAIN")
     }
 
 }

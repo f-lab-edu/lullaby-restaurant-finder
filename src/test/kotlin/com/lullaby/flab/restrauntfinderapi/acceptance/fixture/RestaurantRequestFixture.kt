@@ -5,6 +5,7 @@ import com.lullaby.flab.restrauntfinderapi.application.restaurant.response.Resta
 import com.lullaby.flab.restrauntfinderapi.domain.FoodType
 import io.restassured.RestAssured
 import org.assertj.core.api.Assertions
+import org.assertj.core.api.Assertions.assertThat
 import org.springframework.http.HttpStatus
 import org.springframework.http.MediaType
 
@@ -18,7 +19,7 @@ fun 식당_생성(accessToken: String, name: String, address: String, tables: In
         .`when`().post("/restaurants")
         .then().log().all().extract()
 
-    Assertions.assertThat(response.statusCode()).isEqualTo(HttpStatus.CREATED.value())
+    assertThat(response.statusCode()).isEqualTo(HttpStatus.CREATED.value())
 
     return response.`as`(RestaurantResponse::class.java)
 }
@@ -31,7 +32,27 @@ fun 식당_조회(accessToken: String): List<RestaurantResponse> {
         .`when`().get("/restaurants")
         .then().log().all().extract()
 
-    Assertions.assertThat(response.statusCode()).isEqualTo(HttpStatus.OK.value())
+    assertThat(response.statusCode()).isEqualTo(HttpStatus.OK.value())
 
     return response.jsonPath().getList("", RestaurantResponse::class.java)
+}
+
+fun 식당_메뉴_추가(accessToken: String, restaurantId: Long, name: String, price: Int, type: String): RestaurantResponse {
+    val command = mapOf(
+        "name" to name,
+        "price" to price,
+        "type" to type
+    )
+
+    val response = RestAssured
+        .given().log().all()
+        .header("Authorization", "Bearer $accessToken")
+        .body(command)
+        .contentType(MediaType.APPLICATION_JSON_VALUE)
+        .`when`().post("/restaurants/$restaurantId/menus")
+        .then().log().all().extract()
+
+    assertThat(response.statusCode()).isEqualTo(HttpStatus.CREATED.value())
+
+    return response.`as`(RestaurantResponse::class.java)
 }
