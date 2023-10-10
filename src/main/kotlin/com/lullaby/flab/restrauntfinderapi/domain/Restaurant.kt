@@ -1,9 +1,13 @@
 package com.lullaby.flab.restrauntfinderapi.domain
 
+import jakarta.persistence.CascadeType
 import jakarta.persistence.Column
 import jakarta.persistence.Entity
 import jakarta.persistence.EnumType
 import jakarta.persistence.Enumerated
+import jakarta.persistence.FetchType
+import jakarta.persistence.JoinColumn
+import jakarta.persistence.OneToMany
 
 @Entity
 class Restaurant(
@@ -20,7 +24,16 @@ class Restaurant(
     val foodType: FoodType,
 
     id: Long = 0L,
-): BaseEntity()
+): BaseEntity() {
+
+    @OneToMany(mappedBy = "restaurant", cascade = [CascadeType.ALL], fetch = FetchType.LAZY)
+    val menus: MutableList<Menu> = mutableListOf()
+
+    fun addMenu(name: String, price: Int, type: String) {
+        menus.add(Menu(name, price, type, this))
+    }
+
+}
 
 enum class FoodType {
     KOREAN,
