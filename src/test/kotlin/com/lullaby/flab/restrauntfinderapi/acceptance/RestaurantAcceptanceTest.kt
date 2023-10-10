@@ -56,6 +56,9 @@ class RestaurantAcceptanceTest : AcceptanceTest() {
         )
 
         식당_메뉴_추가(accessToken!!, restaurantResponse.id, "칼국수", 11000, "MAIN")
+
+        val restaurantResponses = 식당_조회(accessToken!!)
+        assertThat(restaurantResponses[0].menus.size).isEqualTo(1)
     }
 
 }

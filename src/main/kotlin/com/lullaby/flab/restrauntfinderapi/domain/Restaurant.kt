@@ -29,7 +29,7 @@ class Restaurant(
     @OneToMany(mappedBy = "restaurant", cascade = [CascadeType.ALL], fetch = FetchType.LAZY)
     val menus: MutableList<Menu> = mutableListOf()
 
-    fun addMenu(name: String, price: Int, type: String) {
+    fun addMenu(name: String, price: Int, type: MenuType) {
         menus.add(Menu(name, price, type, this))
     }
 
