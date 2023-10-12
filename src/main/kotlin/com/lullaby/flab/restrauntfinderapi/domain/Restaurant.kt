@@ -6,7 +6,6 @@ import jakarta.persistence.Entity
 import jakarta.persistence.EnumType
 import jakarta.persistence.Enumerated
 import jakarta.persistence.FetchType
-import jakarta.persistence.JoinColumn
 import jakarta.persistence.OneToMany
 
 @Entity
@@ -27,11 +26,15 @@ class Restaurant(
 ): BaseEntity() {
 
     @OneToMany(mappedBy = "restaurant", cascade = [CascadeType.ALL], fetch = FetchType.LAZY)
-    val menus: MutableList<Menu> = mutableListOf()
+    private val menus: MutableList<Menu> = mutableListOf()
+
+    fun getMenus() = menus.toList()
 
     fun addMenu(name: String, price: Int, type: MenuType) {
         menus.add(Menu(name, price, type, this))
     }
+
+    fun findMenuOrNull(menuId: Long): Menu? = menus.find { it.id == menuId }
 
 }
 

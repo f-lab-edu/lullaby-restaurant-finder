@@ -7,3 +7,4 @@ private const val statusText = "RestaurantFailException"
 
 class CreateRestaurantFailException(message: String): UnauthorizedException(statusText, message)
 class NotFoundRestaurantException(): NotFoundException(statusText, "존재 하지 않는 식당 입니다.")
+class NotFoundMenuException(): NotFoundException(statusText, "존재 하지 않는 메뉴 입니다.")

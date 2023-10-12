@@ -20,7 +20,7 @@ data class RestaurantResponse(
         restaurant.address,
         restaurant.tables,
         restaurant.foodType,
-        restaurant.menus.map(::MenuResponse),
+        restaurant.getMenus().map(::MenuResponse),
         restaurant.id
     )
 
