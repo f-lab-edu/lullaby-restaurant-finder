@@ -6,6 +6,7 @@ import com.lullaby.flab.restrauntfinderapi.application.restaurant.command.Create
 import com.lullaby.flab.restrauntfinderapi.application.restaurant.command.UpdateMenuCommand
 import com.lullaby.flab.restrauntfinderapi.application.restaurant.response.RestaurantResponse
 import org.springframework.http.HttpStatus
+import org.springframework.web.bind.annotation.DeleteMapping
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PostMapping
@@ -41,4 +42,10 @@ class RestaurantController(
         @PathVariable menuId: Long,
         @RequestBody request: UpdateMenuCommand
     ) = restaurantService.updateMenu(restaurantId, menuId, request)
+
+    @DeleteMapping("/restaurants/{restaurantId}/menus/{menuId}")
+    fun removeMenu(
+        @PathVariable restaurantId: Long,
+        @PathVariable menuId: Long
+    ) = restaurantService.removeMenu(restaurantId, menuId)
 }

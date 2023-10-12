@@ -41,4 +41,11 @@ class RestaurantService(
         menu.update(command.name, command.price, command.type)
     }
 
+    fun removeMenu(restaurantId: Long, menuId: Long) {
+        val restaurant = restaurantRepository.findByIdOrNull(restaurantId) ?: throw NotFoundRestaurantException()
+        val isRemoved = restaurant.removeMenu(menuId)
+        if (!isRemoved) {
+            throw NotFoundMenuException()
+        }
+    }
 }

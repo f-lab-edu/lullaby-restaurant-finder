@@ -35,7 +35,7 @@ class Restaurant(
     }
 
     fun findMenuOrNull(menuId: Long): Menu? = menus.find { it.id == menuId }
-
+    fun removeMenu(menuId: Long) = menus.removeIf { it.id == menuId }
 }
 
 enum class FoodType {
