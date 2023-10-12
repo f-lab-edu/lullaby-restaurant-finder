@@ -25,7 +25,14 @@ class Menu(
     val restaurant: Restaurant,
 
     id: Long = 0L,
-): BaseEntity(id)
+): BaseEntity(id) {
+
+    init {
+        check(name.isNotBlank()) { "메뉴 이름을 입력 해야 합니다." }
+        check(price >= 0) { "메뉴 가격은 0 보다 작을 수 없습니다." }
+    }
+
+}
 
 enum class MenuType {
     MAIN,
