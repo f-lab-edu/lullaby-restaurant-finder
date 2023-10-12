@@ -5,3 +5,6 @@ application:
       access-token: 3600000
       refresh-token: 604800000
 
+spring:
+  jpa:
+    show-sql: false
