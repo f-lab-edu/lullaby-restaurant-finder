@@ -119,4 +119,26 @@ class RestaurantAcceptanceTest : AcceptanceTest() {
 
         assertThat(response.statusCode()).isEqualTo(HttpStatus.OK.value())
     }
+
+    @DisplayName("식당에 존재 하지 않는 메뉴를 삭제 시도 시, 실패 한다.")
+    @Test
+    fun removeMenu_fail() {
+        val restaurantId = 식당_생성(
+            accessToken!!,
+            "강남교자 본점",
+            "서울 서초구 강남대로69길 11 삼미빌딩",
+            20,
+            FoodType.KOREAN
+        ).id
+        val menuId = 식당_메뉴_추가(accessToken!!, restaurantId, "칼국수", 11000, "MAIN").menus[0].id
+
+        val response = RestAssured
+            .given().log().all()
+            .header("Authorization", "Bearer $accessToken")
+            .contentType(MediaType.APPLICATION_JSON_VALUE)
+            .`when`().delete("/restaurants/$restaurantId/menus/${menuId + 1}")
+            .then().log().all().extract()
+
+        assertThat(response.statusCode()).isEqualTo(HttpStatus.NOT_FOUND.value())
+    }
 }
