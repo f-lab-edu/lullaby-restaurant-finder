@@ -1,6 +1,7 @@
 package com.lullaby.flab.restrauntfinderapi.acceptance
 
 import com.lullaby.flab.restrauntfinderapi.acceptance.fixture.로그인
+import com.lullaby.flab.restrauntfinderapi.acceptance.fixture.식당_메뉴_수정
 import com.lullaby.flab.restrauntfinderapi.acceptance.fixture.식당_메뉴_추가
 import com.lullaby.flab.restrauntfinderapi.acceptance.fixture.식당_생성
 import com.lullaby.flab.restrauntfinderapi.acceptance.fixture.식당_조회
@@ -86,29 +87,14 @@ class RestaurantAcceptanceTest : AcceptanceTest() {
             20,
             FoodType.KOREAN
         ).id
-        val restaurantResponse = 식당_메뉴_추가(accessToken!!, restaurantId, "칼국수", 11000, "MAIN")
-        val menuId = restaurantResponse.menus[0].id
+        val menuId = 식당_메뉴_추가(accessToken!!, restaurantId, "칼국수", 11000, "MAIN").menus[0].id
 
-        val command = mapOf(
-            "name" to "떡갈비",
-            "price" to 4000,
-            "type" to MenuType.SUB.name
-        )
+        식당_메뉴_수정(accessToken!!, restaurantId, menuId, "떡갈비", 4000, MenuType.SUB)
 
-        val response = RestAssured
-            .given().log().all()
-            .header("Authorization", "Bearer $accessToken")
-            .body(command)
-            .contentType(MediaType.APPLICATION_JSON_VALUE)
-            .`when`().put("/restaurants/${restaurantResponse.id}/menus/${menuId}")
-            .then().log().all().extract()
-
-        assertThat(response.statusCode()).isEqualTo(HttpStatus.OK.value())
-
-        val restaurantResponses = 식당_조회(accessToken!!)
-        val menu = restaurantResponses[0].menus[0]
+        val menu = 식당_조회(accessToken!!)[0].menus[0]
         assertThat(menu.name).isEqualTo("떡갈비")
         assertThat(menu.price).isEqualTo(4000)
         assertThat(menu.type).isEqualTo(MenuType.SUB)
     }
+
 }
