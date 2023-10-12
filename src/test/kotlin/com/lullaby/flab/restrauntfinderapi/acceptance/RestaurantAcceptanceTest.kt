@@ -7,6 +7,7 @@ import com.lullaby.flab.restrauntfinderapi.acceptance.fixture.식당_생성
 import com.lullaby.flab.restrauntfinderapi.acceptance.fixture.식당_조회
 import com.lullaby.flab.restrauntfinderapi.acceptance.fixture.회원_가입
 import com.lullaby.flab.restrauntfinderapi.application.restaurant.command.CreateMenuCommand
+import com.lullaby.flab.restrauntfinderapi.application.restaurant.command.UpdateMenuCommand
 import com.lullaby.flab.restrauntfinderapi.domain.FoodType
 import com.lullaby.flab.restrauntfinderapi.domain.MenuType
 import io.restassured.RestAssured
@@ -97,4 +98,25 @@ class RestaurantAcceptanceTest : AcceptanceTest() {
         assertThat(menu.type).isEqualTo(MenuType.SUB)
     }
 
+    @DisplayName("식당을 생성 하고 메뉴를 추가한 후, 메뉴를 삭제 한다.")
+    @Test
+    fun removeMenu() {
+        val restaurantId = 식당_생성(
+            accessToken!!,
+            "강남교자 본점",
+            "서울 서초구 강남대로69길 11 삼미빌딩",
+            20,
+            FoodType.KOREAN
+        ).id
+        val menuId = 식당_메뉴_추가(accessToken!!, restaurantId, "칼국수", 11000, "MAIN").menus[0].id
+
+        val response = RestAssured
+            .given().log().all()
+            .header("Authorization", "Bearer $accessToken")
+            .contentType(MediaType.APPLICATION_JSON_VALUE)
+            .`when`().delete("/restaurants/$restaurantId/menus/${menuId}")
+            .then().log().all().extract()
+
+        assertThat(response.statusCode()).isEqualTo(HttpStatus.OK.value())
+    }
 }
