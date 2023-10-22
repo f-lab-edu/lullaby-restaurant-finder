@@ -1,0 +1,10 @@
+application:
+  jwt:
+    secret: "Y2hvcHBhLWRvbnQtYml0ZS1tZS1zcHJpbmctYm9vdC1qd3QtdGVzdC1zZWNyZXQta2V5LWNob3BwYS1kb250LWJpdGUtbWUtc3ByaW5nLWJvb3Qtand0LXRlc3Qtc2VjcmV0LWtleQo="
+    expires:
+      access-token: 3600000
+      refresh-token: 604800000
+
+spring:
+  jpa:
+    show-sql: true
