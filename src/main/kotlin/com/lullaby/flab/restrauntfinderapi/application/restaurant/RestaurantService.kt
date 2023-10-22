@@ -4,14 +4,13 @@ import com.lullaby.flab.restrauntfinderapi.application.restaurant.command.Create
 import com.lullaby.flab.restrauntfinderapi.application.restaurant.command.CreateRestaurantCommand
 import com.lullaby.flab.restrauntfinderapi.application.restaurant.command.UpdateMenuCommand
 import com.lullaby.flab.restrauntfinderapi.application.restaurant.response.RestaurantResponse
-import com.lullaby.flab.restrauntfinderapi.common.error.NotFoundException
 import com.lullaby.flab.restrauntfinderapi.domain.Restaurant
 import com.lullaby.flab.restrauntfinderapi.domain.RestaurantRepository
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 
-@Transactional(readOnly = true)
+
 @Service
 class RestaurantService(
     val restaurantRepository: RestaurantRepository,
