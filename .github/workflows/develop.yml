@@ -32,7 +32,6 @@ jobs:
         run: |
           chmod +x ./gradlew
           ./gradlew clean test --stacktrace --parallel
-            - name: Test with Gradle
       - name: Build with Gradle
         run: |
           ./gradlew bootJar --parallel
