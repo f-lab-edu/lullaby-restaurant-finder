@@ -2,9 +2,9 @@ name: CI/CD with Gradle
 
 on:
   push:
-    branches: ["develop"]
+    branches: ["main"]
   pull_request:
-    branches: ["develop"]
+    branches: ["main"]
 
 permissions:
   contents: read
@@ -12,7 +12,7 @@ permissions:
 jobs:
   build:
     runs-on: ubuntu-latest
-    environment: develop
+    environment: production
     steps:
       - uses: actions/checkout@v3
       - name: Set up JDK 17
@@ -43,12 +43,12 @@ jobs:
           password: ${{ secrets.DOCKERHUB_PASSWORD }}
       - name: Docker Image Build & Push
         run: |
-          docker build -f Dockerfile.develop . -t ${{ secrets.DOCKERHUB_REPO }}/restaurant-api:develop
-          docker push ${{ secrets.DOCKERHUB_REPO }}/restaurant-api:develop
+          docker build -f Dockerfile.develop . -t ${{ secrets.DOCKERHUB_REPO }}/restaurant-api:production
+          docker push ${{ secrets.DOCKERHUB_REPO }}/restaurant-api:production
   deploy:
     runs-on: ubuntu-latest
     needs: build
-    environment: develop
+    environment: production
     steps:
       - name: Docker Pull & Run
         uses: appleboy/ssh-action@v0.1.10
@@ -60,7 +60,7 @@ jobs:
           command_timeout: 30m
           script: |
             sudo docker rm -f $(docker ps -qa)
-            sudo docker pull ${{ secrets.DOCKERHUB_REPO }}/restaurant-api:develop
+            sudo docker pull ${{ secrets.DOCKERHUB_REPO }}/restaurant-api:production
             docker run -e SPRING_PROFILES_ACTIVE=${{ secrets.SPRING_PROFILES_ACTIVE }} \
-            -p 8080:8080 -dit ${{ secrets.DOCKERHUB_REPO }}/restaurant-api:develop 
+            -p 8080:8080 -dit ${{ secrets.DOCKERHUB_REPO }}/restaurant-api:production 
             docker image prune -f
