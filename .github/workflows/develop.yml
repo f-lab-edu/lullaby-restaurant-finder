@@ -44,4 +44,4 @@ jobs:
       - name: Docker Image Build & Push
         run: |
           docker build . -t ${{ secrets.DOCKERHUB_REPO }}/restaurant-api:develop
-          docker push ${{ secrets.DOCKER_REPO }}/restaurant-api:develop
+          docker push ${{ secrets.DOCKERHUB_REPO }}/restaurant-api:develop
