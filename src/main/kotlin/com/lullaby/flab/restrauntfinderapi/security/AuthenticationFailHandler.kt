@@ -1,5 +1,6 @@
 package com.lullaby.flab.restrauntfinderapi.security
 
+import com.fasterxml.jackson.core.json.JsonWriteFeature
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.lullaby.flab.restrauntfinderapi.common.error.ErrorResponse
 import com.lullaby.flab.restrauntfinderapi.common.error.UnauthorizedException
@@ -20,8 +21,8 @@ class AuthenticationFailHandler : AuthenticationEntryPoint {
         authException: AuthenticationException
     ) {
         // 유효한 자격 증명을 제공 하지 않고 접근 하려 할때 401
-        response.status = HttpServletResponse.SC_UNAUTHORIZED
-        response.contentType = MediaType.APPLICATION_JSON_VALUE
+        response.status = HttpStatus.UNAUTHORIZED.value()
+        response.contentType = MediaType.APPLICATION_JSON_UTF8.toString()
         response.writer.print(messageTemplate)
     }
     companion object {
